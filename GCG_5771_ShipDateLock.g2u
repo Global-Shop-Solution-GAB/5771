@@ -1,0 +1,17 @@
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+	'EMC's accounting department does not want shop floor users to be able to change the ship date on either shipments screen
+	'Hook 28510 - Shipments New Populate
+	f.Intrinsic.Control.If(v.Caller.Hook,=,28510)
+		f.Intrinsic.UI.ChangeCallerProperty(V.Passed.000206, "LOCK", 1)
+	'Hook 25910 - Shipments Open Populate
+	f.Intrinsic.Control.ElseIf(v.Caller.Hook,=,25910)
+		f.Intrinsic.UI.ChangeCallerProperty(V.Passed.000022, "LOCK", 1)
+	'Hook 38401 - Staged Shipments Populate
+	f.Intrinsic.Control.ElseIf(v.Caller.Hook,=,38401)
+		f.Intrinsic.UI.ChangeCallerProperty(V.Passed.000038, "LOCK", 1)
+		f.Intrinsic.UI.ChangeCallerProperty(V.Passed.000039, "LOCK", 1)
+	f.Intrinsic.Control.EndIf
+Program.Sub.Main.End
